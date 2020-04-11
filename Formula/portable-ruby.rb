@@ -3,10 +3,9 @@ require File.expand_path("../Abstract/portable-formula", __dir__)
 class PortableRuby < PortableFormula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  # This is the version shipped in macOS 10.15.
-  url "https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.3.tar.bz2"
-  mirror "http://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.3.tar.bz2"
-  sha256 "dd638bf42059182c1d04af0d5577131d4ce70b79105231c4cc0a60de77b14f2e"
+  url "https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.6.tar.bz2"
+  mirror "http://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.6.tar.bz2"
+  sha256 "f08b779079ecd1498e6a2548c39a86144c6c784dcec6f7e8a93208682eb8306e"
 
   bottle do
     cellar :any_skip_relocation
@@ -14,7 +13,6 @@ class PortableRuby < PortableFormula
     sha256 "e8c9b6d3dc5f40844e07b4b694897b8b7cb5a7dab1013b3b8712a22868f98c98" => :x86_64_linux
   end
 
-  depends_on "makedepend" => :build
   depends_on "pkg-config" => :build
   depends_on "portable-readline" => :build
   depends_on "portable-libyaml" => :build
@@ -33,9 +31,11 @@ class PortableRuby < PortableFormula
 
     args = %W[
       --prefix=#{prefix}
+      --enable-static
+      --disable-shared
       --enable-load-relative
       --with-static-linked-ext
-      --with-out-ext=tk,sdbm,gdbm,dbm
+      --with-out-ext=tk,sdbm,gdbm,dbm,ripper,win32,win32ole
       --without-gmp
       --disable-install-doc
       --disable-install-rdoc
@@ -60,6 +60,7 @@ class PortableRuby < PortableFormula
     end
 
     args << "--with-opt-dir=#{paths.join(":")}"
+    args << "--with-openssl-dir=#{openssl.opt_prefix}"
 
     system "./configure", *args
     system "make"
