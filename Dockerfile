@@ -1,4 +1,4 @@
-ARG img=debian/eol:wheezy
+ARG img=debian/eol:buster
 # hadolint ignore=DL3006
 FROM ${img}
 ARG img
@@ -32,8 +32,8 @@ RUN apt-get update \
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8 \
     && useradd -m -s /bin/bash linuxbrew
 
-RUN git clone --depth=1 https://github.com/Homebrew/brew /home/linuxbrew/.linuxbrew/Homebrew \
-    && git clone --depth=1 https://github.com/Homebrew/linuxbrew-core /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/homebrew/homebrew-core \
+RUN git clone --depth=1 https://github.com/homebrew-ppc64le/brew /home/linuxbrew/.linuxbrew/Homebrew \
+    && git clone --depth=1 https://github.com/homebrew-ppc64le/homebrew-core /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/homebrew/homebrew-core \
     && mkdir /home/linuxbrew/.linuxbrew/bin \
     && ln -s ../Homebrew/bin/brew /home/linuxbrew/.linuxbrew/bin/ \
-    && brew tap homebrew/portable-ruby
+    && brew tap homebrew-ppc64le/portable-ruby
